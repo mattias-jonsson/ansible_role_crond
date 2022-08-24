@@ -1,0 +1,4 @@
+---
+
+ansible_role_crond_dependencies:
+  - cronie

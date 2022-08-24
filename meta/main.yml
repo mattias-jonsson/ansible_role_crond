@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  author: Mattias Jonsson
+  description: Ansible role to configure cron on supported distributions.
+  min_ansible_version: 2.9.27
+  role_name: ansible_role_crond
+  license: MIT
+  platforms:
+  - name: EL
+    versions:
+    - "7"

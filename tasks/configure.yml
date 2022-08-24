@@ -1,0 +1,38 @@
+---
+
+- name: ensure that crond file is removed, this is stupid...
+  become: true
+  ansible.builtin.file:
+    path: "/etc/cron.d/{{ item.cron_file | basename }}"
+    state: absent
+  loop: "{{ ansible_role_crond_options }}"
+  when:  item.state != 'present'
+
+- name: configure crond file from variables
+  become: true
+  ansible.builtin.cron:
+    name: "{{ item.name | default(omit) }}"
+    minute: "{{ item.minute | default(omit) }}"
+    hour: "{{ item.hour | default(omit) }}"
+    day: "{{ item.day_of_month | default(omit) }}"
+    month: "{{ item.month | default(omit) }}"
+    weekday: "{{ item.day_of_week | default(omit) }}"
+    special_time: "{{ item.special_time | default(omit) }}"
+    user: "{{ item.user | default(omit) }}"
+    state: "{{ item.state | default(omit) }}"
+    job: "{{ item.job | default(omit) }}"
+    cron_file: "{{ item.cron_file | basename | default(omit) }}"
+    backup: "{{ item.backup | default(true)}}"
+  loop: "{{ ansible_role_crond_options }}"
+
+- name: add environment variables to crond file
+  become: true
+  ansible.builtin.cron:
+    name: "{{ item.1.name }}"
+    job: "{{ item.1.value }}"
+    env: yes
+    cron_file: "{{ item.0.cron_file }}"
+    user: "{{ item.0.user }}"
+    backup: "{{ item.0.backup }}"
+  loop: "{{ ansible_role_crond_options|subelements('env_vars',{'skip_missing': True}) }}"
+  when: item.0.state == "present" 
