@@ -19,6 +19,7 @@ Role Variables
 
 Available variables are listed below:
 
+
     name:
 
 Name of the cronjob will be listed as #Ansible: name
@@ -130,7 +131,7 @@ Example Playbook
               state: absent
 
       roles:
-         - role: ansible_role_openssh
+         - ansible_role_crond
 
 License
 -------
