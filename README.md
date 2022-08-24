@@ -98,7 +98,7 @@ Allowed values for `state`.
 Dependencies
 ------------
 
-This role has no external dependencies.
+None.
 
 Example Playbook
 ----------------
