@@ -22,7 +22,7 @@
     state: "{{ item.state | default(omit) }}"
     job: "{{ item.job | default(omit) }}"
     cron_file: "{{ item.cron_file | basename | default(omit) }}"
-    backup: "{{ item.backup | default(true)}}"
+    backup: "{{ item.backup | default(true) }}"
   loop: "{{ ansible_role_crond_options }}"
 
 - name: add environment variables to crond file
