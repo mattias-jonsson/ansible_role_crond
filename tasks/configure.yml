@@ -1,14 +1,14 @@
 ---
-
-- name: ensure that crond file is removed, this is stupid...
+# this is stupid...
+- name: Ensure that crond file is removed.
   become: true
   ansible.builtin.file:
     path: "/etc/cron.d/{{ item.cron_file | basename }}"
     state: absent
   loop: "{{ ansible_role_crond_options }}"
-  when:  item.state != 'present'
+  when: item.state != 'present'
 
-- name: configure crond file from variables
+- name: Configure crond file from variables.
   become: true
   ansible.builtin.cron:
     name: "{{ item.name | default(omit) }}"
@@ -25,14 +25,14 @@
     backup: "{{ item.backup | default(true) }}"
   loop: "{{ ansible_role_crond_options }}"
 
-- name: add environment variables to crond file
+- name: Add environment variables to crond file.
   become: true
   ansible.builtin.cron:
     name: "{{ item.1.name }}"
     job: "{{ item.1.value }}"
-    env: yes
+    env: true
     cron_file: "{{ item.0.cron_file }}"
     user: "{{ item.0.user }}"
     backup: "{{ item.0.backup }}"
-  loop: "{{ ansible_role_crond_options|subelements('env_vars',{'skip_missing': True}) }}"
-  when: item.0.state == "present" 
+  loop: "{{ ansible_role_crond_options | subelements('env_vars', {'skip_missing': True}) }}"
+  when: item.0.state == "present"
